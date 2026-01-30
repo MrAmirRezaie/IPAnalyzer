@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ipanalyzer"
+version = "1.0.0"
+description = "Advanced IP Analysis Tool - WHOIS lookup, network scanning, and IP range analysis"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "MrAmirRezaie", email = ""}
+]
+keywords = ["ip", "whois", "network", "scanning", "analysis", "cidr", "subnet"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Networking",
+    "Topic :: Internet",
+]
+
+[project.urls]
+Homepage = "https://github.com/MrAmirRezaie/IPAnalyzer"
+Documentation = "https://github.com/MrAmirRezaie/IPAnalyzer/wiki"
+Repository = "https://github.com/MrAmirRezaie/IPAnalyzer"
+Issues = "https://github.com/MrAmirRezaie/IPAnalyzer/issues"
+
+[project.scripts]
+ipanalyzer = "ipanalyzer_cli:main"

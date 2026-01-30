@@ -1,0 +1,7 @@
+# IPAnalyzer Requirements
+# No external dependencies required - uses Python standard library only
+# Python 3.8+
+
+# Optional for enhanced functionality:
+# requests>=2.25.0  # For optional online WHOIS queries
+# colorama>=0.4.4   # For colored terminal output
