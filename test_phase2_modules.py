@@ -163,11 +163,9 @@ def test_threat_intelligence():
 def main():
     """Run all tests"""
     print("\n")
-    print("╔" + "=" * 58 + "╗")
-    print("║" + " " * 58 + "║")
-    print("║" + "   IPAnalyzer Phase 2 - Module Functionality Tests".center(58) + "║")
-    print("║" + " " * 58 + "║")
-    print("╚" + "=" * 58 + "╝")
+    print("=" * 60)
+    print("   IPAnalyzer Phase 2 - Module Functionality Tests")
+    print("=" * 60)
     print()
     
     try:
@@ -177,7 +175,7 @@ def main():
         test_threat_intelligence()
         
         print("=" * 60)
-        print("✓ ALL PHASE 2 MODULES PASSED FUNCTIONAL TESTS!")
+        print("ALL PHASE 2 MODULES PASSED FUNCTIONAL TESTS!")
         print("=" * 60)
         print()
         
