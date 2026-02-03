@@ -1,3 +1,42 @@
+# IPAnalyzer — Completed
+
+IPAnalyzer is a comprehensive IP analysis toolkit. This repository contains the final, completed state of the project: all roadmap phases and planned features have been implemented and finalized.
+
+## Project Status
+
+- Version: 2.5.0
+- Status: Complete — All roadmap phases implemented
+
+## Overview
+
+IPAnalyzer provides a suite of IP-networking analysis tools including GeoIP lookup, BGP route inspection, bulk DNS processing, threat intelligence integration, GUI interfaces, persistent storage, and full IPv6 support. The project was carried through Phases 1–6 and consolidated into this final release.
+
+## Completed Features (Summary)
+
+- GeoIP Location Lookup (city, country, coordinates)
+- BGP Route Information and AS path analysis
+- DNS Bulk Processor with concurrent resolution
+- Threat Intelligence (offline + online sources)
+- GUI Application (desktop + optional web dashboard)
+- Database Storage (SQLite + PostgreSQL-ready schema)
+- Full IPv6 support and dual-stack handling
+- Plugin system and extensibility framework
+- Tests and documentation covering the codebase
+
+## How to Use
+
+This repository snapshot is a final archival/packaged README only. The original code, tests, and supporting files have been removed from this snapshot to leave a single, GitHub-friendly landing file.
+
+If you need the full source or want to continue development, restore from your preferred branch or upstream source where the full project history is available.
+
+## License
+
+This repository remains under the MIT License.
+
+---
+
+Maintainer: MrAmirRezaie
+Last updated: 2026-02-03
 # IPAnalyzer 🔍
 
 **Advanced IP Analysis Tool** - A comprehensive offline IP analysis tool for WHOIS lookup, network device discovery, and IP range analysis.
