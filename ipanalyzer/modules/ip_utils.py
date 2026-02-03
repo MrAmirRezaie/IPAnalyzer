@@ -1,3 +1,49 @@
+"""IP utilities with IPv4/IPv6 support"""
+from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address
+from typing import List
+
+
+class IPUtils:
+    @staticmethod
+    def is_valid_ip(addr: str) -> bool:
+        try:
+            ip_address(addr)
+            return True
+        except Exception:
+            return False
+
+    @staticmethod
+    def is_ipv4(addr: str) -> bool:
+        try:
+            return isinstance(ip_address(addr), IPv4Address)
+        except Exception:
+            return False
+
+    @staticmethod
+    def is_ipv6(addr: str) -> bool:
+        try:
+            return isinstance(ip_address(addr), IPv6Address)
+        except Exception:
+            return False
+
+    @staticmethod
+    def parse_cidr(cidr: str):
+        net = ip_network(cidr, strict=False)
+        return {
+            "network": str(net.network_address),
+            "netmask": str(net.netmask),
+            "prefixlen": net.prefixlen,
+            "broadcast": str(net.broadcast_address) if hasattr(net, 'broadcast_address') else None,
+            "total": net.num_addresses,
+        }
+
+    @staticmethod
+    def get_usable_ips(cidr: str) -> List[str]:
+        net = ip_network(cidr, strict=False)
+        # For IPv4 exclude network and broadcast when possible
+        if isinstance(net.network_address, IPv4Address) and net.num_addresses > 2:
+            return [str(ip) for ip in net.hosts()]
+        return [str(ip) for ip in net]
 """
 IP Utility Functions
 Core utilities for IP address parsing and validation
