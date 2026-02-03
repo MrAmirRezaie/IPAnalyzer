@@ -1,3 +1,47 @@
+"""Bulk DNS processor using threads from the standard library."""
+import socket
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List, Dict
+
+
+class DNSBulkProcessor:
+    def __init__(self, workers: int = 10):
+        self.workers = workers
+
+    def resolve(self, host: str) -> Dict:
+        result = {'host': host}
+        try:
+            infos = socket.getaddrinfo(host, None)
+            addrs = sorted({ai[4][0] for ai in infos})
+            result['addresses'] = addrs
+        except Exception as e:
+            result['error'] = str(e)
+        return result
+
+    def reverse(self, ip: str) -> Dict:
+        result = {'ip': ip}
+        try:
+            name = socket.gethostbyaddr(ip)[0]
+            result['name'] = name
+        except Exception as e:
+            result['error'] = str(e)
+        return result
+
+    def bulk_resolve(self, hosts: List[str]) -> List[Dict]:
+        out = []
+        with ThreadPoolExecutor(max_workers=self.workers) as ex:
+            futures = {ex.submit(self.resolve, h): h for h in hosts}
+            for fut in as_completed(futures):
+                out.append(fut.result())
+        return out
+
+    def bulk_reverse(self, ips: List[str]) -> List[Dict]:
+        out = []
+        with ThreadPoolExecutor(max_workers=self.workers) as ex:
+            futures = {ex.submit(self.reverse, ip): ip for ip in ips}
+            for fut in as_completed(futures):
+                out.append(fut.result())
+        return out
 """
 DNS Bulk Processor - Multi-threaded DNS lookup and resolution module
 Provides batch forward and reverse DNS processing with caching and export capabilities.

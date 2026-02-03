@@ -1,3 +1,4 @@
+# No external dependencies required for the minimal implementation
 # IPAnalyzer Requirements
 # No external dependencies required - uses Python standard library only
 # Python 3.8+

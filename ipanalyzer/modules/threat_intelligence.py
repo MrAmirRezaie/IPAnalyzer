@@ -1,3 +1,31 @@
+"""Simple threat intelligence module using local blacklists."""
+from pathlib import Path
+
+
+class ThreatIntel:
+    DEFAULT_BLACKLIST = Path(__file__).resolve().parents[1] / "data" / "blacklist.txt"
+
+    def __init__(self, blacklist_path: str = None):
+        self.blacklist = Path(blacklist_path) if blacklist_path else self.DEFAULT_BLACKLIST
+        self._load()
+
+    def _load(self):
+        self._bl = set()
+        try:
+            with open(self.blacklist, 'r', encoding='utf-8') as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line or line.startswith('#'):
+                        continue
+                    self._bl.add(line)
+        except Exception:
+            self._bl = set()
+
+    def is_blacklisted(self, ip: str) -> bool:
+        return ip in self._bl
+
+    def info(self, ip: str) -> dict:
+        return {'ip': ip, 'blacklisted': self.is_blacklisted(ip)}
 """
 Threat Intelligence - IP reputation and threat analysis module
 Provides threat scoring, blacklist management, and threat history tracking.

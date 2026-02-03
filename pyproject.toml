@@ -1,4 +1,12 @@
 [build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+name = "ipanalyzer"
+version = "2.5.0"
+description = "IPAnalyzer - network and IP analysis toolkit"
+[build-system]
 requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 

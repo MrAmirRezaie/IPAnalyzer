@@ -1,3 +1,62 @@
+"""Minimal CLI for the IPAnalyzer package."""
+import argparse
+import json
+from ipanalyzer import GeoIPAnalyzer, BGPAnalyzer, DNSBulkProcessor, ThreatIntel, ReportGenerator
+
+
+def whois_cmd(args):
+    geo = GeoIPAnalyzer()
+    ti = ThreatIntel()
+    info = geo.lookup(args.ip)
+    info['threat'] = ti.info(args.ip)
+    if args.json:
+        print(json.dumps(info, indent=2))
+    else:
+        print(info)
+        if args.output:
+            html = ReportGenerator().generate_html(info)
+            ReportGenerator().save(html, args.output)
+
+
+def bgp_cmd(args):
+    b = BGPAnalyzer()
+    print(b.get_asn_for_ip(args.ip))
+
+
+def dns_bulk_cmd(args):
+    proc = DNSBulkProcessor()
+    hosts = [h.strip() for h in args.hosts.split(',') if h.strip()]
+    res = proc.bulk_resolve(hosts)
+    print(res)
+
+
+def main():
+    p = argparse.ArgumentParser(prog='ipanalyzer')
+    sub = p.add_subparsers(dest='cmd')
+
+    w = sub.add_parser('whois')
+    w.add_argument('ip')
+    w.add_argument('--json', action='store_true')
+    w.add_argument('-o', '--output')
+    w.set_defaults(func=whois_cmd)
+
+    b = sub.add_parser('bgp')
+    b.add_argument('ip')
+    b.set_defaults(func=bgp_cmd)
+
+    d = sub.add_parser('dns-bulk')
+    d.add_argument('hosts', help='comma separated hosts')
+    d.set_defaults(func=dns_bulk_cmd)
+
+    args = p.parse_args()
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        p.print_help()
+
+
+if __name__ == '__main__':
+    main()
 """
 Main CLI Interface for IPAnalyzer
 """

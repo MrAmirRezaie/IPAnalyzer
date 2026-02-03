@@ -1,3 +1,33 @@
+"""Simple SQLite database manager for analysis results."""
+import sqlite3
+from pathlib import Path
+from typing import Optional
+
+
+class DatabaseManager:
+    def __init__(self, path: Optional[str] = None):
+        self.path = Path(path) if path else Path.cwd() / 'ipanalyzer_results.db'
+        self._conn = sqlite3.connect(str(self.path))
+        self._init()
+
+    def _init(self):
+        cur = self._conn.cursor()
+        cur.execute('''
+        CREATE TABLE IF NOT EXISTS analyses (
+            id INTEGER PRIMARY KEY,
+            ip TEXT,
+            data TEXT
+        )
+        ''')
+        self._conn.commit()
+
+    def save(self, ip: str, data: str):
+        cur = self._conn.cursor()
+        cur.execute('INSERT INTO analyses (ip, data) VALUES (?, ?)', (ip, data))
+        self._conn.commit()
+
+    def close(self):
+        self._conn.close()
 """Database manager using SQLite for local persistent storage."""
 import sqlite3
 from typing import Optional, List, Dict

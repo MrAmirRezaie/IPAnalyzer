@@ -1,3 +1,24 @@
+"""Simple plugin discovery and registry."""
+import importlib
+import pkgutil
+from pathlib import Path
+from typing import Dict
+
+
+class PluginManager:
+    def __init__(self, package='ipanalyzer.plugins'):
+        self.package = package
+        self.plugins: Dict[str, object] = {}
+
+    def discover(self):
+        pkg = importlib.import_module(self.package)
+        for finder, name, ispkg in pkgutil.iter_modules(pkg.__path__):
+            try:
+                mod = importlib.import_module(f"{self.package}.{name}")
+                self.plugins[name] = mod
+            except Exception:
+                continue
+        return self.plugins
 """Plugin manager for discovering and loading simple plugins."""
 import os
 import json

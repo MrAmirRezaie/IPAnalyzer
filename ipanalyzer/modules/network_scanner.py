@@ -1,3 +1,24 @@
+"""Basic network scanner stubs (ARP/ping placeholders)."""
+import ipaddress
+from typing import List
+
+
+class NetworkScanner:
+    def scan_network(self, cidr: str) -> List[dict]:
+        # Placeholder: return list of addresses in the network (first 10)
+        net = ipaddress.ip_network(cidr, strict=False)
+        out = []
+        for i, ip in enumerate(net.hosts()):
+            out.append({'ip': str(ip), 'mac': None, 'hostname': None})
+            if i >= 9:
+                break
+        return out
+
+    def scan_ports(self, host: str, ports=None) -> List[int]:
+        # Lightweight port scan using socket is possible but kept simple here
+        if ports is None:
+            ports = [22, 80, 443]
+        return []
 """
 Network Scanner Module
 Discover and list connected devices on a network

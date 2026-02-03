@@ -1,3 +1,21 @@
+"""Simple HTML report generator."""
+from typing import Any, Dict
+
+
+class ReportGenerator:
+    def generate_html(self, data: Dict[str, Any]) -> str:
+        parts = ["<html><head><meta charset='utf-8'><title>IPAnalyzer Report</title></head><body>"]
+        parts.append("<h1>IPAnalyzer Report</h1>")
+        parts.append("<pre>")
+        import json
+        parts.append(json.dumps(data, indent=2))
+        parts.append("</pre>")
+        parts.append("</body></html>")
+        return '\n'.join(parts)
+
+    def save(self, html: str, path: str):
+        with open(path, 'w', encoding='utf-8') as fh:
+            fh.write(html)
 """
 Report Generator Module
 Generate professional HTML reports for IP analysis
