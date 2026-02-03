@@ -1,3 +1,48 @@
+"""Simple offline GeoIP lookup using a CSV database."""
+import csv
+import ipaddress
+from pathlib import Path
+
+
+class GeoIPAnalyzer:
+    DB_PATH = Path(__file__).resolve().parents[1] / "data" / "geoip_db.csv"
+
+    def __init__(self, db_path: str = None):
+        if db_path:
+            self.db = Path(db_path)
+        else:
+            self.db = self.DB_PATH
+
+    def _load_db(self):
+        if not self.db.exists():
+            return []
+        with open(self.db, newline='', encoding='utf-8') as fh:
+            reader = csv.DictReader(fh)
+            return list(reader)
+
+    def lookup(self, ip: str) -> dict:
+        try:
+            ipa = ipaddress.ip_address(ip)
+        except Exception:
+            return {"error": "invalid_ip"}
+
+        rows = self._load_db()
+        for row in rows:
+            try:
+                net = ipaddress.ip_network(row['network'])
+            except Exception:
+                continue
+            if ipa in net:
+                return {
+                    'ip': ip,
+                    'network': row['network'],
+                    'city': row.get('city'),
+                    'country': row.get('country'),
+                    'latitude': row.get('latitude'),
+                    'longitude': row.get('longitude'),
+                }
+
+        return {'ip': ip, 'found': False}
 """
 GeoIP Analyzer - Geographical IP location lookup module
 Provides offline GeoIP analysis with country, city, coordinates, and ISP information.
