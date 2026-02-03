@@ -1,3 +1,34 @@
+"""IP range and CIDR analysis utilities."""
+from ipaddress import ip_network, ip_address
+from typing import List, Dict
+
+
+class IPRangeAnalyzer:
+    def analyze_cidr(self, cidr: str) -> Dict:
+        net = ip_network(cidr, strict=False)
+        return {
+            'cidr': cidr,
+            'network': str(net.network_address),
+            'netmask': str(net.netmask),
+            'prefixlen': net.prefixlen,
+            'total_addresses': net.num_addresses,
+        }
+
+    def subnet_division(self, cidr: str, new_prefix: int) -> List[str]:
+        net = ip_network(cidr, strict=False)
+        subs = list(net.subnets(new_prefix=new_prefix))
+        return [str(s) for s in subs]
+
+    def ip_in_range(self, ip: str, cidr: str) -> bool:
+        try:
+            return ip_address(ip) in ip_network(cidr, strict=False)
+        except Exception:
+            return False
+
+    def overlap(self, cidr1: str, cidr2: str) -> bool:
+        n1 = ip_network(cidr1, strict=False)
+        n2 = ip_network(cidr2, strict=False)
+        return n1.overlaps(n2)
 """
 IP Range Analyzer Module
 Analyze IP ranges, CIDR notation, and subnets

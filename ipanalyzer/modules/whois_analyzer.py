@@ -1,3 +1,43 @@
+"""WHOIS analyzer using WHOIS protocol (port 43) with basic referral handling."""
+import socket
+from typing import Optional
+
+
+class WHOISAnalyzer:
+    DEFAULT_PORT = 43
+
+    def _query_server(self, server: str, query: str, timeout: int = 5) -> str:
+        resp = []
+        try:
+            with socket.create_connection((server, self.DEFAULT_PORT), timeout=timeout) as s:
+                s.sendall((query + '\r\n').encode('utf-8'))
+                while True:
+                    data = s.recv(4096)
+                    if not data:
+                        break
+                    resp.append(data.decode('utf-8', errors='replace'))
+        except Exception as e:
+            return f"ERROR: {e}"
+        return ''.join(resp)
+
+    def lookup(self, ip: str) -> dict:
+        # First query IANA for referral
+        iana = self._query_server('whois.iana.org', ip)
+        # find refer or whois server in response
+        refer = None
+        for line in iana.splitlines():
+            if line.lower().startswith('refer:') or line.lower().startswith('whois:'):
+                parts = line.split(':', 1)
+                if len(parts) > 1:
+                    refer = parts[1].strip()
+                    break
+
+        if not refer:
+            # fallback to ARIN
+            refer = 'whois.arin.net'
+
+        resp = self._query_server(refer, ip)
+        return {'ip': ip, 'server': refer, 'raw': resp}
 """
 WHOIS Analyzer Module
 Offline WHOIS lookup using built-in data and socket communication

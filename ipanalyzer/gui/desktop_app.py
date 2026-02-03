@@ -1,3 +1,62 @@
+"""Minimal Tkinter GUI to demonstrate WHOIS and GeoIP lookup."""
+try:
+    import tkinter as tk
+    from tkinter import scrolledtext
+except Exception:
+    tk = None
+
+from ipanalyzer.modules.whois_analyzer import WHOISAnalyzer
+from ipanalyzer.modules.geoip_analyzer import GeoIPAnalyzer
+
+
+class DesktopApp:
+    def __init__(self):
+        if tk is None:
+            raise RuntimeError('Tkinter not available')
+        self.whois = WHOISAnalyzer()
+        self.geo = GeoIPAnalyzer()
+        self.root = tk.Tk()
+        self.root.title('IPAnalyzer GUI')
+        self._build()
+
+    def _build(self):
+        frm = tk.Frame(self.root)
+        frm.pack(padx=10, pady=10)
+        tk.Label(frm, text='IP or Host').grid(row=0, column=0)
+        self.entry = tk.Entry(frm, width=40)
+        self.entry.grid(row=0, column=1)
+        tk.Button(frm, text='WHOIS', command=self.run_whois).grid(row=0, column=2, padx=5)
+        tk.Button(frm, text='GeoIP', command=self.run_geo).grid(row=0, column=3)
+
+        self.out = scrolledtext.ScrolledText(self.root, width=80, height=20)
+        self.out.pack(padx=10, pady=10)
+
+    def run_whois(self):
+        q = self.entry.get().strip()
+        if not q:
+            return
+        res = self.whois.lookup(q)
+        self.out.delete('1.0', 'end')
+        self.out.insert('1.0', res.get('raw') if isinstance(res.get('raw'), str) else str(res))
+
+    def run_geo(self):
+        q = self.entry.get().strip()
+        if not q:
+            return
+        res = self.geo.lookup(q)
+        self.out.delete('1.0', 'end')
+        self.out.insert('1.0', str(res))
+
+    def run(self):
+        self.root.mainloop()
+
+
+def main():
+    app = DesktopApp()
+    app.run()
+
+if __name__ == '__main__':
+    main()
 """Simple Tkinter GUI for IPAnalyzer (minimal demo)."""
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText

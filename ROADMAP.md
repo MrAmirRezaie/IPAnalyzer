@@ -156,18 +156,18 @@ This document tracks planned enhancements and future features for IPAnalyzer. It
 - [ ] Planning Phase 2-6 features
 
 ### Q2 2026
-- [ ] GeoIP Location Lookup (Phase 2)
-- [ ] BGP Route Information (Phase 2)
-- [ ] DNS Bulk Processing (Phase 2)
+- [x] GeoIP Location Lookup (Phase 2)
+- [x] BGP Route Information (Phase 2)
+- [x] DNS Bulk Processing (Phase 2)
 
 ### Q3 2026
-- [ ] Threat Intelligence Integration (Phase 2)
-- [ ] GUI Application (Phase 3)
+- [x] Threat Intelligence Integration (Phase 2)
+- [x] GUI Application (Phase 3)
 
 ### Q4 2026
-- [ ] Database Storage (Phase 4)
-- [ ] IPv6 Support (Phase 5)
-- [ ] Plugin System (Phase 6)
+- [x] Database Storage (Phase 4)
+- [x] IPv6 Support (Phase 5)
+- [x] Plugin System (Phase 6)
 
 ### Q1 2027+
 - [ ] Additional features and improvements
