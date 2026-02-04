@@ -120,6 +120,10 @@ class GeoIPAnalyzer:
     def batch_lookup(self, ips: List[str]) -> List[Dict]:
         return [self.lookup(i) for i in ips]
 
+    # compatibility wrapper used by tests/callers
+    def batch_analyze(self, ips: List[str]) -> List[Dict]:
+        return self.batch_lookup(ips)
+
     def clear_cache(self) -> None:
         self._cache.clear()
 

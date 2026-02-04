@@ -32,7 +32,7 @@ Provides threat scoring, blacklist management, and threat history tracking.
 """
 from typing import List, Dict, Optional, Set, Tuple
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 class ThreatIntelligence:
@@ -152,7 +152,7 @@ class ThreatIntelligence:
                 'threat_types': [],
                 'malware': [],
                 'exploits': [],
-                'last_seen': datetime.utcnow().isoformat(),
+                'last_seen': datetime.now(timezone.utc).isoformat(),
                 'sources': ['whitelist'],
                 'details': 'IP is on whitelist',
                 'whitelisted': True
@@ -210,7 +210,7 @@ class ThreatIntelligence:
             'threat_types': threat_types,
             'malware': threat_info.get('malware', []) if threat_info else [],
             'exploits': threat_info.get('exploits', []) if threat_info else [],
-            'last_seen': datetime.utcnow().isoformat(),
+            'last_seen': datetime.now(timezone.utc).isoformat(),
             'sources': sources,
             'details': threat_info.get('details', 'No additional details') if threat_info else 'No known threats',
             'whitelisted': False
@@ -255,7 +255,7 @@ class ThreatIntelligence:
             List of threat records within timeframe
         """
         history = self._history.get(ip_address, [])
-        cutoff_time = datetime.utcnow() - timedelta(days=days)
+        cutoff_time = datetime.now(timezone.utc) - timedelta(days=days)
         
         return [record for record in history
                 if datetime.fromisoformat(record['last_seen']) > cutoff_time]
@@ -393,7 +393,7 @@ class ThreatIntelligence:
         Returns:
             Number of records removed
         """
-        cutoff_time = datetime.utcnow() - timedelta(days=days_old)
+        cutoff_time = datetime.now(timezone.utc) - timedelta(days=days_old)
         removed = 0
         
         for ip in list(self._history.keys()):
