@@ -226,6 +226,10 @@ class WHOISAnalyzer:
         
         self.cache[ip] = result
         return result
+
+    # Compatibility method expected by callers/tests
+    def lookup(self, ip: str) -> Dict:
+        return self.analyze_ip(ip)
     
     def get_bulk_analysis(self, ips: list) -> list:
         """Analyze multiple IPs"""

@@ -302,6 +302,16 @@ class DNSBulkProcessor:
         """Clear the DNS query cache."""
         self._cache.clear()
 
+    # Compatibility helpers: simple resolve/reverse used by older callers/tests
+    def resolve(self, host: str) -> Dict:
+        res = self._forward(host)
+        # maintain legacy key names
+        return {'host': host, 'addresses': res.get('ips') if res else [], 'error': res.get('error') if res else None}
+
+    def reverse(self, ip: str) -> Dict:
+        res = self._reverse(ip)
+        return {'ip': ip, 'name': res.get('hostname') if res else None, 'error': res.get('error') if res else None}
+
     def get_statistics(self) -> Dict:
         """
         Get DNS processor statistics.
