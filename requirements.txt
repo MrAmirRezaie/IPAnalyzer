@@ -1,9 +1,9 @@
-IPAnalyzer requirements
-Core runtime dependencies (optional; the project runs with stdlib-only)
+﻿# IPAnalyzer requirements
+# Core runtime dependencies (optional; the project runs with stdlib-only)
 requests>=2.25.0            # Optional: online WHOIS / HTTP requests
 colorama>=0.4.4             # Optional: colored CLI output
 
-Development / CI tools
+# Development / CI tools
 pytest>=6.0                 # Test runner
 flake8>=4.0                 # Linting
 pylint>=2.15.0              # Optional: static analysis
@@ -11,9 +11,8 @@ mypy>=0.991                 # Optional: static type checking
 black>=23.1.0               # Optional: code formatter
 isort>=5.0                  # Optional: import sorting
 
-Notes:
-- The project is designed to work with the Python standard library only.
-- Add or remove optional packages as needed for your environment.
-- To install only development tools in a virtualenv:
-	python -m pip install -r requirements.txt
-
+# Notes:
+# - The project is designed to work with the Python standard library only.
+# - Add or remove optional packages as needed for your environment.
+# - To install packages in a virtualenv:
+#   python -m pip install -r requirements.txt
