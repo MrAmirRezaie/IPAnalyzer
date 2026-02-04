@@ -25,9 +25,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest
+          python -m pip install --upgrade pip setuptools wheel
+          # Install requirements only if file exists and contains non-comment package lines
+          if [ -f requirements.txt ] && grep -v '^[[:space:]]*#' requirements.txt | grep -q '[^[:space:]]'; then
+            python -m pip install -r requirements.txt
+          else
+            echo "No packages to install from requirements.txt; skipping."
+          fi
+          python -m pip install pytest
 
       - name: Run tests
-        run: python -m pytest -q
+        run: |
+          python -m pytest -q
