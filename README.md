@@ -859,7 +859,7 @@ Contributions are welcome! Areas for improvement:
 **MrAmirRezaie** - IP Analysis Tool Creator
 
 ## Support
-
+[Telegram](https://t.me/MrAmirR3zaie)
 For issues, questions, or suggestions, please open an issue or contact the author.
 
 ---
